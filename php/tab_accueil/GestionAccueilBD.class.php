@@ -6,10 +6,10 @@ require_once('GestionBD.class.php');
 
 class GestionAccueilBD extends GestionBD {
 	// ----   Private part: the properties
-	private $table_chapter = "accueil_chapter";
-	private $table_column = "accueil_column";
-	private $table_user = "accueil_user";
-	private $table_bookmark = "accueil_bookmark";
+	private $table_chapter = "bookmarks_chapter";
+	private $table_column = "bookmarks_category";
+	private $table_user = "bookmarks_user";
+	private $table_bookmark = "bookmarks_list";
 
 	// Retrieve the chapter table name
 	public function getChapterTableName() {
@@ -33,6 +33,7 @@ class GestionAccueilBD extends GestionBD {
 
 	// Init of the database
 	public function init() {
+		$this->getUtil()->trace("GestionAccueilBD::init: begin");
 		$res = $this->createTable($this->getChapterTableName(), "
 			id smallint(2) NOT NULL default '0',
 			name varchar(50) NOT NULL default '',
@@ -42,8 +43,8 @@ class GestionAccueilBD extends GestionBD {
 
 		$res = $this->createTable($this->getColumnTableName(), "
 			id smallint(2) NOT NULL default '0',
-			id_chapter smallint(2) NOT NULL default '0',
 			name varchar(50) NOT NULL default '',
+			id_chapter smallint(2) NOT NULL default '0',
 			PRIMARY KEY (id)
 		");
 		if ($res) return $res;
@@ -58,7 +59,10 @@ class GestionAccueilBD extends GestionBD {
 		$res = $this->createTable($this->getBookmarkTableName(), "
 			id smallint(2) NOT NULL default '0',
 			name varchar(50) NOT NULL default '',
+			URL varchar(120) NOT NULL default '',
 			id_column smallint(2) NOT NULL default '0',
+			iconeName varchar(50) NOT NULL default '',
+			tabName varchar(50) NOT NULL default '',
 			id_user smallint(2) NOT NULL default '0',
 			PRIMARY KEY (id)
 		");

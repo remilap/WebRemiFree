@@ -8,7 +8,7 @@
 	require_once('Util.class.php');
 	require_once('GestionAccueilBD.class.php');
 	$tpl = new TemplateEngine($home."/template_lab.html");
-	$tpl->Output( $tpl->GetHTMLCode("entete_lab") );
+	TemplateEngine::Output( $tpl->GetHTMLCode("entete_lab") );
 
 	$debug = isset($_REQUEST['debug']) ? $_REQUEST['debug'] : "";
 	$util = new Util($debug);
@@ -19,6 +19,8 @@
 		echo "<P><B><FONT COLOR='RED'>ERROR unable to connect to the database</FONT></B></P>\n";
 		exit (1);
 	}
+
+	$accueilBD->setDebugTo($debug);
 
 	$resCnx = $accueilBD->connexion();
 	if ($resCnx) {
@@ -115,5 +117,5 @@
 	<P><INPUT TYPE='CHECKBOX' NAME='debug' id='debug' VALUE='".$debug."' ".($debug?"CHECKED":"")."/><LABEL FOR='debug'>Debug</LABEL></P>\n
 	</FORM>\n";
 
-	$tpl->Output( $tpl->GetHTMLCode('baspage_lab') );
+	TemplateEngine::Output( $tpl->GetHTMLCode('baspage_lab') );
 ?>

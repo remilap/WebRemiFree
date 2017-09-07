@@ -9,10 +9,10 @@ class Util {
 
 	// Constructor
 	public function __construct($debug = 0, $htmlFormat = 1) {
-		$this->setDebugTo($debug);
+		$this->debug = $debug;
 		$this->htmlFormat = $htmlFormat;
 		$this->id = self::$nextId++;
-		$this->trace("constructeur de Util no ".$this->id." avec debug=".$this->getDebugStatus()." et htmlFormat=".$this->htmlFormat);
+		$this->trace("constructor of Util no ".$this->id." with debug=".$this->getDebugStatus()." and htmlFormat=".$this->htmlFormat);
 	}
 
 	// Set the debug ON
@@ -25,12 +25,9 @@ class Util {
 		$this->debug = 0;
 	}
 
-	// Set the debug status
-	public function setDebugTo($debug) {
-		if ($debug == 0)
-			$this->setDebugOff();
-		else
-			$this->setDebugOn();
+	// Set the debug to a given state
+	public function setDebugTo($debug = 0) {
+		$this->debug = $debug;
 	}
 
 	// Get the debug status
@@ -38,13 +35,19 @@ class Util {
 		return $this->debug;
 	}
 
+	// Get the class id
+	public function getId() {
+		return $this->id;
+	}
+
 	// Displays a texte if debug is ON, by default in HTML format
 	public function trace($texte, $html=1) {
 		if ($this->getDebugStatus()) {
+			$txt = "TRACE".$this->id." ".$texte;
 			if ($html) {
-				echo "<FONT BGCOLOR='white' COLOR='black'>TRACE ".$texte."</FONT><BR />\n";
+				echo "<A CLASS='trace'>".$txt."</A><BR />\n";
 			} else {
-				echo $texte."\n";
+				echo $txt."\n";
 			}
 		}
 	}
@@ -54,32 +57,45 @@ class Util {
 		$this->trace("traceUneVar: ".$uneVar." = ".$GLOBALS[$uneVar]);
 	}
 
+	// Displays (if debug is ON) a variable (maybe a simple type or an array)
+	public function traceAVariable($nomVar, $theVar) {
+		if (is_array($theVar)) {
+			$this->traceTableau($nomVar, $theVar);
+		} else {
+			$this->trace($nomVar." = ".$theVar);
+		}
+	}
+
 	// Displays (if debug is ON) an array and its contents
 	public function traceTableau($nomTab, $leTab) {
 		if ($this->getDebugStatus() && $leTab) {
 			$nb1 = 0;
 			foreach ($leTab as $key => $value) {
 				$nb1++;
-				$this->trace($nomTab."[" . $key . "] = " . $value);
 				if (is_array($value)) {
+					$this->trace($nomTab."[" . $key . "] = array");
 					$nb2 = 0;
 					foreach ($value as $key2 => $val2) {
 						$nb2++;
 						$this->trace("&nbsp; &nbsp; => " . $key . "[" . $key2 . "] = " . $val2);
 					}
-					if ($nb2 > 0) $this->trace("&nbsp; -> nombre de sous-élément(s) : ".$nb2);
+					if ($nb2 > 0) $this->trace("&nbsp; -> number of sub-element(s) : ".$nb2);
+				} else {
+					$this->trace($nomTab."[" . $key . "] = " . $value);
 				}
 			}
-			if ($nb1 > 0) $this->trace("&nbsp; -> nombre d'élément(s) dans ".$nomTab." : ".$nb1);
+			if ($nb1 > 0) $this->trace("&nbsp; -> number of element(s) in ".$nomTab." : ".$nb1);
 		}
 	}
 
 	// Displays (if debug is ON) the different php arrays
 	public function traceVariables($enplus='') {
 		if ($this->getDebugStatus()) {
-			if (isset($_REQUEST)) $this->traceTableau("_REQUEST", $_REQUEST);
-			if (isset($_FILES)) $this->traceTableau("_FILES", $_FILES);
-			if (isset($_SESSION)) $this->traceTableau("_SESSION", $_SESSION);
+			$this->traceTableau("_REQUEST", $_REQUEST);
+			$this->traceTableau("_FILES", $_FILES);
+			if (isset($_SESSION)) {
+				$this->traceTableau("_SESSION", $_SESSION);
+			}
 			if ((strpos($enplus,'SERVER')>0) && isset($_SERVER)) {
 				$this->traceTableau("_SERVER", $_SERVER);
 			}
@@ -141,7 +157,7 @@ class Util {
 	// ???
 	public function getLesOptions($leTab, $keySelected="", $valSelected="") {
 		foreach ($leTab as $key => $value) {
-			echo '<OPTION VALUE="'.$key.'" ';
+			echo '<OPTION VALUE="'.$key.'" ';
 			if ($keySelected == $key || $valSelected == $value) {
 				echo 'SELECTED';
 			}
@@ -152,40 +168,40 @@ class Util {
 	// Retrieve a file after its selection
 	public function upload($index, $destination, $maxsize=FALSE, $extensions=FALSE) {
 		$this->trace("function upload(index=".$index.", destination=".$destination.")");
-		$erreur = "";
+		$error = "";
 		//Test1: fichier correctement uploade
 		if (!isset($_FILES[$index]) OR $_FILES[$index]['error'] > 0) {
-			$erreur = "Erreur de transfert, fichier $index non trouvé";
-			return $erreur;
+			$error = "Transfer error, $index file not found";
+			return $error;
 		}
 		//Test2: taille limite
 		if ($maxsize !== FALSE AND $_FILES[$index]['size'] > $maxsize) {
-			$erreur = "Fichier ".$_FILES[$index]['name']." trop gros (> ".$maxsize.")";
-			return $erreur;
+			$error = "File ".$_FILES[$index]['name']." is too big (> ".$maxsize.")";
+			return $error;
 		}
 		//Test3: extension
 		$ext = substr(strrchr($_FILES[$index]['name'],'.'),1);
 		if ($extensions !== FALSE AND !in_array($ext,$extensions)) {
-			$erreur = "Extension ".$ext." non supportée";
-			return $erreur;
+			$error = "Extension ".$ext." not supported";
+			return $error;
 		}
 		//Deplacement
 		$res = move_uploaded_file($_FILES[$index]['tmp_name'],$destination);
 		if (!$res) {
-			$erreur = "Erreur lors du déplacement du fichier ".$_FILES[$index]['name']." vers ".$destination;
-			return $erreur;
+			$error = "Error during file move from ".$_FILES[$index]['name']." to ".$destination;
+			return $error;
 		}
-		return $erreur;
+		return $error;
 	}
 
 	// Returns the next free id for a table
 	public function getNextFreeId($bd, $tableName) {
-		$requete = "SELECT max(`id`) FROM ".$tableName;
-		$resId = $bd->execRequete($requete);
+		$request = "SELECT max(`id`) FROM ".$tableName;
+		$resId = $bd->execRequete($request);
 		if ($resId) {
 			$resBrut = $bd->tableauSuivant($resId);
 			$result = $resBrut[0] + 1;
-			$this->trace("getNextFreeId(".$tableName."): requete = ".$requete);
+			$this->trace("getNextFreeId(".$tableName."): request = ".$request);
 			$this->trace("=> result = ".$result);
 		} else {
 			$result = 1;

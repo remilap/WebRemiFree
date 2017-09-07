@@ -5,8 +5,8 @@
 include("clas_consql.php");
 $myscript = "bookmarks.php";
 $mybase = "remi_lapointe";
-$tab_genres = "bookmarks_genre";
-$tab_categories = "bookmarks_categories";
+$tab_chapter = "bookmarks_chapter";
+$tab_category = "bookmarks_category";
 $tab_bookmarks = "bookmarks_list";
 
 $siteWeb = $_SERVER['DOCUMENT_ROOT'];
@@ -14,13 +14,13 @@ $imgAbsDir = $siteWeb . "/img/";
 $imgDir = "../img";
 $jvsDir = $siteWeb . "/javascript/";
 
-$page = "";
-$page_l_genre = "liste_genre";
+$page_l_chapter = "liste_chapter";
 $page_l_categorie = "liste_categorie";
 $page_l_bookmark  = "liste_bookmark";
 $page_l_bookmark2 = "liste_bookmark2";
 $page_e_categorie = "edit_categorie";
 $page_e_bookmark  = "edit_bookmark";
+$page = $page_l_chapter;
 if ( isset($_REQUEST['page']) ) {
   $page = $_REQUEST['page'];
 }
@@ -37,23 +37,23 @@ if ( isset($_REQUEST['debug']) ) {
 $lsql = new conSQL( $_SERVER['SERVER_NAME'], $mybase, $debug );
 
 
-// recuperer la liste des genres
+// recuperer la liste des chapitres
 $resu = NULL;
-$nbGenre = $lsql->selectSQL( "SELECT * FROM $tab_genres ORDER BY `index` ASC", $resu );
-for ( $i = 0 ; $i < $nbGenre ; $i++ ) {
+$nbChapter = $lsql->selectSQL( "SELECT * FROM $tab_chapter ORDER BY `index` ASC", $resu );
+for ( $i = 0 ; $i < $nbChapter ; $i++ ) {
   $elem = mysql_fetch_row($resu);
   $id = 0;
   $index = $elem[$id++];      // index
   $nom = $elem[$id++];        // nom
-  $genreNam[$index] = $nom;
-  $genreNbr[$index] = 0;
-  $genreMaxLink[$index] = 0;
+  $chapterNam[$index] = $nom;
+  $chapterNbr[$index] = 0;
+  $chapterMaxLink[$index] = 0;
   if ( $debug > 0 ) print "index=$index, nom=$nom<br>\n";
 }
 
 // recuperer la liste des categories
 $resu = NULL;
-$nbCateg = $lsql->selectSQL( "SELECT * FROM $tab_categories ORDER BY `index` ASC", $resu );
+$nbCateg = $lsql->selectSQL( "SELECT * FROM $tab_category ORDER BY `index` ASC", $resu );
 for ( $i = 0 ; $i < $nbCateg ; $i++ ) {
   $elem = mysql_fetch_row($resu);
   $id = 0;
@@ -61,10 +61,10 @@ for ( $i = 0 ; $i < $nbCateg ; $i++ ) {
   $nom = $elem[$id++];        // nom
   $categNam[$index] = $nom;
   $categNbr[$index] = 0;
-  $genreIdx = $elem[$id++];   // genreIdx
-  $categGenreIdx[$index] = $genreIdx;
-  $genreNbr[$genreIdx]++;
-  if ( $debug > 0 ) print "index=$index, nom=$nom, genreNbr[$genreIdx]={$genreNbr[$genreIdx]}<br>\n";
+  $chapterIdx = $elem[$id++];   // chapterIdx
+  $categchapterIdx[$index] = $chapterIdx;
+  $chapterNbr[$chapterIdx]++;
+  if ( $debug > 0 ) print "index=$index, nom=$nom, chapterNbr[$chapterIdx]={$chapterNbr[$chapterIdx]}<br>\n";
 }
 
 $resu = NULL;
@@ -78,17 +78,17 @@ for ( $i = 0 ; $i < $nbLink ; $i++ ) {
   $categIdx = $elem[$id++];           // categIdx
   $linkCategIdx[$index] = $categIdx;
   $categNbr[$categIdx]++;
-  $genreIdx = $categGenreIdx[$categIdx];
-  if ( $categNbr[$categIdx] > $genreMaxLink[$genreIdx] ) {
-    $genreMaxLink[$genreIdx] = $categNbr[$categIdx];
+  $chapterIdx = $categchapterIdx[$categIdx];
+  if ( $categNbr[$categIdx] > $chapterMaxLink[$chapterIdx] ) {
+    $chapterMaxLink[$chapterIdx] = $categNbr[$categIdx];
   }
   $linkIco[$index] = $elem[$id++];    // iconeName
   $linkTab[$index] = $elem[$id++];    // tabName
-  if ( $debug > 0 ) print "index=$index, title={$linkTit[$index]}, categIdx=$categIdx, categNam={$categNam[$categIdx]}, nb={$categNbr[$categIdx]}, maxLinkInGenre={$genreMaxLink[$genreIdx]}<br>\n";
+  if ( $debug > 0 ) print "index=$index, title={$linkTit[$index]}, categIdx=$categIdx, categNam={$categNam[$categIdx]}, nb={$categNbr[$categIdx]}, maxLinkInchapter={$chapterMaxLink[$chapterIdx]}<br>\n";
 }
 
-if ( $page == $page_l_genre ) {
-  $title = "Liste des genres des bookmarks";
+if ( $page == $page_l_chapter ) {
+  $title = "Liste des chapitres des bookmarks";
   $debut = "\n";
 
 } elseif ( $page == $page_l_categorie ) {
@@ -129,18 +129,18 @@ print "
 $debut";
 
 
-if ( $page == $page_l_genre ) {
+if ( $page == $page_l_chapter ) {
   print "<ul>\n";
-  foreach ( $genreNam as $gKey=>$gNam ) {
-    echo "genre[$gKey]=$gNam, nb categ={$genreNbr[$gKey]}, max={$genreMaxLink[$gKey]}<br>\n";
+  foreach ( $chapterNam as $gKey=>$gNam ) {
+    echo "chapter[$gKey]=$gNam, nb categ={$chapterNbr[$gKey]}, max={$chapterMaxLink[$gKey]}<br>\n";
   }
 
 } elseif ( $page == $page_l_categorie ) {
   print "<ul>\n";
-  foreach ( $genreNam as $gKey=>$gNam ) {
-    echo "genre[$gKey]=$gNam, nb categ={$genreNbr[$gKey]}, max={$genreMaxLink[$gKey]}<br>\n";
+  foreach ( $chapterNam as $gKey=>$gNam ) {
+    echo "chapter[$gKey]=$gNam, nb categ={$chapterNbr[$gKey]}, max={$chapterMaxLink[$gKey]}<br>\n";
     foreach ( $categNam as $cKey=>$cNam ) {
-      if ( $gKey == $categGenreIdx[$cKey] ) {
+      if ( $gKey == $categchapterIdx[$cKey] ) {
         print "  <li>$cKey : $cNam ($gNam), nb_link={$categNbr[$cKey]}</li>";
       }
     }
@@ -182,22 +182,22 @@ if ( $page == $page_l_genre ) {
   }
 
 } elseif ( $page == $page_l_bookmark2 ) {
-  foreach ( $genreNam as $gKey=>$gNam ) {
+  foreach ( $chapterNam as $gKey=>$gNam ) {
     print "<p>$gNam\n";
-    if ( $debug > 1 ) echo "genre[$gKey]=$gNam, nb categ={$genreNbr[$gKey]}, max={$genreMaxLink[$gKey]}<br>\n";
+    if ( $debug > 1 ) echo "chapter[$gKey]=$gNam, nb categ={$chapterNbr[$gKey]}, max={$chapterMaxLink[$gKey]}<br>\n";
     print "<table border=\"1\" cellspacing=\"1\" cellpadding=\"5\">\n";
     foreach ( $categNam as $cKey=>$cNam ) {
-      if ( $gKey == $categGenreIdx[$cKey] ) {
+      if ( $gKey == $categchapterIdx[$cKey] ) {
         print "  <li>$cKey : $cNam ($gNam), nb_link={$categNbr[$cKey]}</li>";
       }
     }
   }
-    foreach ( $categTab[$genreNam] as $categKey=>$categNam ) {
+    foreach ( $categTab[$chapterNam] as $categKey=>$categNam ) {
     for ( $c = 1 ; $c <= $nbCateg ; $c++ ) {
       $categNam = $categ['nom'][$c];
-      $genreVal = $categ['genre'][$c];
-      if ( $genreVal == $genreNam ) {
-        print "  <li>$c : $nom ($genreVal), nb_link={$categ['nb'][$c]}</li>";
+      $chapterVal = $categ['chapter'][$c];
+      if ( $chapterVal == $chapterNam ) {
+        print "  <li>$c : $nom ($chapterVal), nb_link={$categ['nb'][$c]}</li>";
       }
     }
   }
@@ -211,7 +211,7 @@ if ( $page == $page_l_genre ) {
 if ( $page == $page_l_evaluation ) {
   print "</ul>\n";
 
-} elseif ( $page == $page_l_genre ) {
+} elseif ( $page == $page_l_chapter ) {
   print "</ul>\n";
 
 }
