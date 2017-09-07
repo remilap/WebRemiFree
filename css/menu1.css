@@ -1,0 +1,28 @@
+body {behavior: url(csshover.htc);}
+div#menu {width: 100px;}
+
+/* fond blanc pour le menu */ 
+div#menu a {color:#000000}
+div#menu ul {padding: 0; width: 100px; border:1px solid; margin:0px; background: white}
+
+/* fond different au survol de la souris pour les sous menu et les "basiques"*/ 
+div#menu li:hover {background: #EDD}
+div#menu li.sousmenu:hover {background: #EBB;}
+
+/* Rajout d'une petite fleche pour les sous menu */ 
+div#menu li.sousmenu {background: url(fleche.gif) 95% 50% no-repeat;}
+
+div#menu ul li {position:relative; list-style: none; border-bottom:1px solid;}
+div#menu ul ul {position: absolute; top: -1px; left: 100px; display:none}
+
+/* on rajoute une bordure a gauche et des padding, on doit donc réajuster la taille 100-(8 de bordure + 8 de padding) =84 */ 
+div#menu li a {text-decoration: none; padding: 4px 0 4px 8px; display:block; border-left: 8px solid #BBB; width:84px}
+div#menu ul.niveau1 li.sousmenu:hover ul.niveau2, 
+div#menu ul.niveau2 li.sousmenu:hover ul.niveau3 {display:block;}
+
+/* la bordure de chaque hauteur a une couleure de survol*/ 
+div#menu li a:hover {border-left-color: red;}
+div#menu ul ul li a:hover {border-left-color: #00FF00;}
+div#menu ul ul ul li a:hover {border-left-color: #0000FF;}
+
+

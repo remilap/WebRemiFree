@@ -1,0 +1,55 @@
+/* css Les cadres en CSS v2 */
+/* css http://css.developpez.com/tutoriels/pseudo-frames/  */
+
+/* basic elements */
+html, body 
+{
+   margin:0;
+   padding:0;
+   height:100%; /* 100 % en hauteur */
+}
+
+html>body #wrap {height:100%;} /* 100 % en hauteur */
+
+#header,
+#footer {
+	font: 120% Mistral, sans-serif;
+	color:#800000;
+	background:#DAA520;
+	text-align:center;
+}
+
+#wrap 
+{
+   width:100%;
+   margin:0 auto;
+}
+
+#header 
+{
+   width:100%;
+   height:5em;
+}
+
+html>body #header 
+{
+   position:fixed;
+   z-index:10; /* empêche certains problèmes avec les élements de formulaire */
+}
+
+html>body #content-wrap {height:100%;} /* 100 % height */
+
+html>body #content {padding:6em 1em;} /* 6em = hauteur de #header et #footer + 1em, 1em = donne au contenu un peu d'espace par rapport aux bords */
+
+#footer 
+{
+   width:100%;
+   height:3em;
+}
+
+html>body #footer 
+{
+   position:fixed;
+   bottom:0;
+   z-index:10; /* empêche certains problèmes avec les élements de formulaire */
+}
