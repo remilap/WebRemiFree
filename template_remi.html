@@ -1,0 +1,223 @@
+<!---===== begin_template entete =====---><?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<!--base href="http://remi.lapointe.free.fr/" /-->
+	<meta name="identifier-url" content="http://remi.lapointe.free.fr/" />
+	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+	<meta http-equiv="content-language" content="fr" />
+	<meta http-equiv="Page-Enter" content="blendTrans(Duration=3.0)" />
+	<meta name="author" content="Remi Lapointe" />
+	<meta name="reply-to" content="remi.lapointe@free.fr" />
+	<meta name="copyright" content="" />
+	<meta name="keywords" content="personnel, informatique, photos, partition, batterie, drum" />
+	<meta name="category" content="personal, computer, image" />
+	<meta name="description" content="Site de la famille Lapointe de Nantes" />
+	<meta name="revisit-after" content="1 day" />
+	<meta name="expires" content="never" />
+	<meta name="date-creation-yyyymmdd" content="20070915" />
+	<meta name="date-revision-yyyymmdd" content="${date}" />
+	<meta name="robots" content="all" />
+	<meta name="google-site-verification" content="mI6LGgzSknxS6jQlmr2qNLXqmWF5Rjs9QVgw8NjgOy0" />
+
+	<title>${titre}</title>
+
+	<style type="text/css" media="all">
+		@import "${home}/css/sample.css";
+		@import "${home}/css/frame.css";
+	</style>
+	<!--[if lt IE 7]><link rel="stylesheet" href="${home}/css/ie.css" type="text/css"><![endif]-->
+
+	<!-- script type="text/javascript" language="JavaScript" src="${home}/javascript/browserdetect.js"></script -->
+
+</head>
+<body>
+
+<div id="wrap">
+  <div id="header">
+    <table width="100%"><tr>
+      <td width="10%" align="left"><font size="+1"><a href="${home}/index.php">Accueil</a></font></td>
+      <td width="80%" align="center"><h1>${titre}</h1></td>
+      <td width="10%" align="right">&nbsp;</td>
+    </tr></table>
+  </div> <!-- header -->
+
+  <div id="content-wrap">
+    <div id="content">
+
+<!---===== end_template =====--->
+
+<!---===== begin_template entete_mysql =====---><?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<!-- meta name="identifier-url" content="http://remi.lapointe.free.fr/" / -->
+	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+	<meta http-equiv="content-language" content="fr" />
+	<meta charset="utf-8">
+	<meta http-equiv="Page-Enter" content="blendTrans(Duration=3.0)" />
+	<meta name="author" content="Remi Lapointe" />
+	<meta name="reply-to" content="remi.lapointe@free.fr" />
+	<meta name="copyright" content="" />
+	<meta name="keywords" content="personnel, informatique" />
+	<meta name="category" content="personal, computer" />
+	<meta name="description" content="Essai PHP MySQL" />
+	<meta name="revisit-after" content="1 day" />
+	<meta name="expires" content="never" />
+	<meta name="date-creation-yyyymmdd" content="20110822" />
+	<meta name="date-revision-yyyymmdd" content="${date}" />
+	<meta name="robots" content="all" />
+	<meta name="google-site-verification" content="mI6LGgzSknxS6jQlmr2qNLXqmWF5Rjs9QVgw8NjgOy0" />
+
+	<title>${titre}</title>
+
+	<!-- load Iriven's stylesheet file -->
+	<link rel="stylesheet" href="${home}/libs/css/Iriven_FormManager.css">
+
+	<!-- load jQuery -->
+	<script src="${home}/libs/javascript/jquery.js"></script>
+
+	<!-- load Iriven's JavaScript file -->
+	<script src="${home}/libs/javascript/Iriven_FormManager.js"></script>
+
+	<style type="text/css" media="all">
+		@import "${home}/css/sample.css";
+		@import "${home}/css/frame.css";
+	</style>
+	<!--[if lt IE 7]><link rel="stylesheet" href="${home}/css/ie.css" type="text/css"><![endif]-->
+
+	<!-- script type="text/javascript" language="JavaScript" src="${home}/javascript/browserdetect.js"></script -->
+
+</head>
+<body>
+
+<div id="wrap">
+  <div id="header">
+    <table width="100%"><tr>
+      <td width="10%" align="left"><font size="+1"><a href="${home}/index.php">Accueil</a></font></td>
+      <td width="80%" align="center"><h1>${titre}</h1></td>
+      <td width="10%" align="right">&nbsp;</td>
+    </tr></table>
+  </div> <!-- header -->
+
+  <div id="content-wrap">
+    <div id="content">
+
+<!---===== end_template =====--->
+
+<!---===== begin_template ImageNew =====--->
+<img src="${imgfile}" alt="${imgtext}" ${imgattr} />
+<!---===== end_template =====--->
+
+<!---===== begin_template courrierFCPE44 =====--->
+<li>${imgnew}<a href="../documents_${annee}/courrier_FCPE44_no0${numcourrier}/Courriel_hebdo_CL_${numcourrier}.html">Courriel hebdomadaire n° ${numcourrier}</a> (${datcourrier})
+  <ul>
+  ${lesdocuments}
+  </ul>
+<br /></li>
+<!---===== end_template =====--->
+
+<!---===== begin_template ListeDocuments =====--->
+<ul>
+${lesdocuments}
+</ul>
+<!---===== end_template =====--->
+
+<!---===== begin_template UnFichier =====--->
+${imgnew}<a href="${fname}">
+<img border="0" height="25" alt="Fichier ${ftype}" src="${ficone}" /> (${fsize} Ko)
+${texte}</a>
+<!---===== end_template =====--->
+
+<!---===== begin_template UnDocument =====--->
+<li>${adoc}</li>
+<!---===== end_template =====--->
+
+<!---===== begin_template pdfreader =====--->
+<br />&nbsp;&nbsp;Pour lire les fichiers pdf, t&eacute;l&eacute;chargez
+<a href="http://www.adobe.com/fr/products/acrobat/readstep2.html">Adobe Reader <img border="0" alt="T&eacute;l&eacute;charger Adobe Reader" src="${home}/img/get_adobe_reader.gif" /></a>
+ou <a href="http://www.foxitsoftware.com/pdf/rd_intro.php">Foxit Reader <img border="0" alt="T&eacute;l&eacute;charger Foxit Reader" src="${home}/img/get_foxit_reader.gif" /></a>
+<br />
+<br />
+<!---===== end_template =====--->
+
+<!---===== begin_template cc_untrimestre =====--->
+<li>${trim_num} trimestre ann&eacute;e scolaire ${annee_tiret} (cliquez sur le nom du r&eacute;dacteur pour consulter le compte rendu du conseil de classe)
+<br />
+<center>
+  <table border="2" cellspacing="1" cellpadding="4">
+  ${lesniveaux}
+  </table></center>
+<br /></li>
+
+<!---===== end_template =====--->
+
+<!---===== begin_template cc_unniveau =====--->
+<tr>
+${lesclasses}
+</tr>
+<!---===== end_template =====--->
+
+<!---===== begin_template cc_uneclasse =====--->
+<td><center><b>${classe}</b><br />
+<u>${date_heure}</u><br />
+${delegue_redacteur}<br />
+${delegue_autre}<br />
+</center></td>
+<!---===== end_template =====--->
+
+<!---===== begin_template cc_delegue_redacteur =====--->
+<a href="${compte_rendu}">${delegue}</a>
+<!---===== end_template =====--->
+
+<!---===== begin_template cc_delegue =====--->
+${personne} <font size="-2">[${assoc}]</font>
+<!---===== end_template =====--->
+
+<!---===== begin_template baspage =====--->
+
+    </div> <!-- content -->
+  </div> <!-- content-wrap -->
+
+  <div id="footer">
+    <div id="labfooter">
+
+<p style="text-align: center;">
+    <font size="+1"><a href="mailto:REMI;LAPOINTE@free.fr?subject=Nous contacter">Nous contacter</a></font>&nbsp; &nbsp; &nbsp; &nbsp;
+    <a href="http://validator.w3.org/check?uri=referer">
+    <img style="border:0;width:88px;height:31px" src="${home}/img/valid-xhtml10.png" alt="Valid XHTML 1.0 Transitional" />
+    </a>&nbsp;&nbsp;&nbsp;
+    <a href="http://jigsaw.w3.org/css-validator/check/referer">
+    <img style="border:0;width:88px;height:31px" src="${home}/img/vcss.png" alt="CSS Valide !" />
+    </a>&nbsp;&nbsp;&nbsp;
+
+<!-- phpmyvisites -->
+<a href="http://st.free.fr/" title="phpMyVisites | Open source web analytics"
+onclick="window.open(this.href);return(false);">
+<script type="text/javascript">
+<!--
+var a_vars = Array();
+var pagename='';
+
+var phpmyvisitesSite = 28281;
+var phpmyvisitesURL = "http://st.free.fr/phpmyvisites.php";
+//-->
+</script>
+<script language="javascript" src="http://st.free.fr/phpmyvisites.js" type="text/javascript"></script>
+<object><noscript>phpMyVisites | Open source web analytics
+<img src="${home}/img/phpmyvisites.png" alt="Statistics" style="border:0" />
+</noscript></object></a>
+<!-- /phpmyvisites --> 
+
+</p>
+
+    </div> <!-- labfooter -->
+  </div> <!-- footer -->
+</div> <!-- wrap -->
+
+</body>
+</html>
+<!---===== end_template =====--->
+
