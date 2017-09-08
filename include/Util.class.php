@@ -12,7 +12,7 @@ class Util {
 		$this->debug = $debug;
 		$this->htmlFormat = $htmlFormat;
 		$this->id = self::$nextId++;
-		$this->trace("constructor of Util no ".$this->id." with debug=".$this->getDebugStatus()." and htmlFormat=".$this->htmlFormat);
+		$this->trace("constructor of ".$this->getInfo());
 	}
 
 	// Set the debug ON
@@ -40,10 +40,28 @@ class Util {
 		return $this->id;
 	}
 
-	// Displays a texte if debug is ON, by default in HTML format
-	public function trace($texte, $html=1) {
+	// Get some information about the current instance
+	public function getInfo() {
+		$txt = "Util=".$this->getId()."-debug=".$this->getDebugStatus()."-htmlFormat=".$this->htmlFormat;
+		return $txt;
+	}
+
+	// Displays a texte if debug is ON, by default with calling class/function in HTML format
+	public function trace($texte, $ctx=1, $html=1) {
 		if ($this->getDebugStatus()) {
-			$txt = "TRACE".$this->id." ".$texte;
+			$txt = "TRACE".$this->id." ";
+			if ($ctx) {
+				if (isset(debug_backtrace()[1])) {
+					$caller = debug_backtrace()[1];
+					if ($caller["file"]) {
+						$txt .= "[".$caller["file"].":".$caller["line"]."] ";
+					}
+					if ($caller["class"]) {
+						$txt .= $caller["class"].$caller["type"].$caller["function"]." ";
+					}
+				}
+			}
+			$txt .= $texte;
 			if ($html) {
 				echo "<A CLASS='trace'>".$txt."</A><BR />\n";
 			} else {

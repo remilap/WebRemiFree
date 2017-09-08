@@ -20,7 +20,7 @@
 		exit (1);
 	}
 
-	$accueilBD->setDebugTo($debug);
+	$accueilBD->getUtil()->setDebugTo($debug);
 
 	$resCnx = $accueilBD->connexion();
 	if ($resCnx) {
@@ -107,13 +107,16 @@
 	}
 	$msg = "";
 	if ($nbBookmarks == 0) {
-		$msg = "None element found in the database<BR />\n";
+		$msg = "No element found in the database<BR />\n";
 	}
 	echo $msg;
 
 	echo "</TABLE>\n
 	<BR />\n
 	<INPUT TYPE='SUBMIT' NAME='addBookmark' VALUE='Add a bookmark'>\n
+	<INPUT TYPE='SUBMIT' NAME='addChapter' VALUE='Add a chapter'>\n
+	<INPUT TYPE='SUBMIT' NAME='addColumn' VALUE='Add a column'>\n
+	<INPUT TYPE='SUBMIT' NAME='addUser' VALUE='Add a user'>\n
 	<P><INPUT TYPE='CHECKBOX' NAME='debug' id='debug' VALUE='".$debug."' ".($debug?"CHECKED":"")."/><LABEL FOR='debug'>Debug</LABEL></P>\n
 	</FORM>\n";
 

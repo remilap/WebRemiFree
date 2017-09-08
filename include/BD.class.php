@@ -7,6 +7,7 @@ function Connexion ($sgbd, $login, $passe, $base, $serveur, $debug = 0) {
 
 	// Instanciation d'un objet instance de BD. 
 	// Choix de la sous-classe en fonction de la configuration
+	$theBd = null;
 	switch ($sgbd) {
 	case BD::BD_POSTGRESQL:
 		$theBd = new BDPostgreSQL ($login, $passe, $base, $serveur, $debug);
@@ -24,7 +25,7 @@ function Connexion ($sgbd, $login, $passe, $base, $serveur, $debug = 0) {
 }
 
 
-class BD {
+abstract class BD {
 	const BD_POSTGRESQL = "PostgreSQL";		// PostgreSQL
 	const BD_MYSQL = "MySQL";				// MySQL
 	const BD_SQLITE = "SQLite";				// SQLite
@@ -41,7 +42,7 @@ class BD {
 		$this->error_mesg = "";
 		$this->sgbd = "Unknown";
 		$this->util = new Util($debug);
-		$this->getUtil()->trace("BD::__construct(login=".$login.", pwd=***, base=".$base.", server=".$server.")");
+		$this->getUtil()->trace("(login=".$login.", pwd=***, base=".$base.", server=".$server.")");
 
 		// Connexion au serveur par appel à une méthode privée
 		$this->connexion = $this->connect($login, $password, $base, $server);
@@ -55,21 +56,26 @@ class BD {
 	}
 
 	// Méthodes privées
-	private function connect($login, $password, $base, $server) {}
-	private function exec($request) {}
 
 	// Méthodes publiques
+	public function connect($login, $password, $base, $server) {}
+	public function exec($request) {}
+
+	// Give the connexion object
+	public function getCnx() {
+		return $this->connexion;
+	}
 
 	// Méthode d'exécution d'une requête
 	public function execRequest($request) {
-		$this->getUtil()->trace("BD::execRequest begin");
+		$this->getUtil()->trace("begin");
 		$result = $this->exec($request);
 		if ($this->error_code != 0) {
 			echo "Error during request execution: ".$request."<br /> " . $this->getErrorMessage();
-			$this->getUtil()->trace("BD::execRequest, " . $this->getErrorMessage());
+			$this->getUtil()->trace($this->getErrorMessage());
 		}
 
-		$this->getUtil()->trace("BD::execRequest end with error_code: " . $this->getErrorCode());
+		$this->getUtil()->trace("end with error_code: " . $this->getErrorCode());
 		return $result;
 	}
 
@@ -115,26 +121,6 @@ class BD {
 	// Error message
 	public function getErrorMessage() {
 		return $this->error_mesg;
-	}
-
-	// Set ON the debug mode of this class
-	public function setDebugOn() {
-		$this->util->setDebugOn();
-	}
-
-	// Set OFF the debug mode of this class
-	public function setDebugOff() {
-		$this->util->setDebugOff();
-	}
-
-	// Set the debug status
-	public function setDebugTo($debug) {
-		$this->util->setDebugTo($debug);
-	}
-
-	// Get the debug status of this class
-	public function getDebugStatus() {
-		return $this->util->getDebugStatus();
 	}
 
 	// Get the Util class reference

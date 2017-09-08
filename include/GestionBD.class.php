@@ -21,27 +21,7 @@ abstract class GestionBD {
 	public function __construct($debug = 0, $typ = "MySQL") {
 		$this->typ = $typ;
 		$this->util = new Util($debug);
-		$this->util->trace("GestionBD::__construct: with type BD=".$typ." and debug=".$debug);
-	}
-
-	// Set ON the debug mode of this class
-	public function setDebugOn() {
-		$this->util->setDebugOn();
-	}
-
-	// Set OFF the debug mode of this class
-	public function setDebugOff() {
-		$this->util->setDebugOff();
-	}
-
-	// Set the debug status
-	public function setDebugTo($debug) {
-		$this->util->setDebugTo($debug);
-	}
-
-	// Get the debug status of this class
-	public function getDebugStatus() {
-		return $this->util->getDebugStatus();
+		$this->util->trace("with type BD=".$typ." and debug=".$debug);
 	}
 
 	// Get the Util class reference
@@ -65,28 +45,29 @@ abstract class GestionBD {
 
 	// Connexion to the database
 	public function connexion() {
-		$this->getUtil()->trace("GestionBD::connexion: to the ".$this->typ." database named ".BASE." on the ".SERVER." server");
-		$bd = Connexion ($this->typ, NOM, PASSE, BASE, SERVER, $this->getDebugStatus());
+		$this->getUtil()->trace("cnx to the ".$this->typ." database named ".BASE." on the server ".SERVER." with ".$this->getUtil()->getInfo());
+		$bd = Connexion ($this->typ, NOM, PASSE, BASE, SERVER, $this->getUtil()->getDebugStatus());
 		if (! $bd) {
 			$error = "Unable to access to the ".BASE." database";
 			return $error;
 		}
 		$this->bd = $bd;
-		$this->getUtil()->trace("GestionBD::connexion end with debug=".$this->getDebugStatus()." util no ".$this->getUtil()->getId());
+		$this->getUtil()->trace("bd de type ".get_class($this->bd));
+		$this->getUtil()->trace("end with ".$this->getUtil()->getInfo()." and bd ".$this->bd->getUtil()->getInfo());
 		return null;
 	}
 
 	// Add a table name with its fields
 	public function createTable($tableName, $fields) {
-		$this->getUtil()->trace("GestionBD::createTable(table=".$tableName.", fields=".$fields.")");
+		$this->getUtil()->trace("(table=".$tableName.", fields=".$fields.")");
 		$this->nbTables++;
 		$this->tablesName[$this->nbTables] = $tableName;
 		$this->tablesFields[$this->nbTables] = $fields;
 		$reqCreate = "CREATE TABLE IF NOT EXISTS ".$tableName." (".$fields.")";
 	
-		$this->getUtil()->trace("GestionBD::createTable: ".$reqCreate);
+		$this->getUtil()->trace("reqCreate: ".$reqCreate);
+		$this->getUtil()->trace("GestionBDMySQL->debug: ".$this->bd->getUtil()->getDebugStatus());
 		$resCreate = $this->bd->execRequest($reqCreate);
-		echo "resCreate: ".$resCreate;
 		if (! $resCreate) {
 			$error = "Error during ".$tableName." database creation<br />".$this->messageSGBD();
 			return $error;
@@ -96,7 +77,6 @@ abstract class GestionBD {
 
 	// Init of the database
 	public function init() {
-
 		return null;
 	}
 
@@ -122,7 +102,7 @@ abstract class GestionBD {
 
 	// Get next line from last request
 	public function getNextLine($resList) {
-		return $this->bd->objetSuivant($resList);
+		return $this->bd->nextObject($resList);
 	}
 
 	// Returns the next free id for a table
@@ -131,7 +111,7 @@ abstract class GestionBD {
 		$this->getUtil()->trace("Request=".$requete);
 		$resId = $this->bd->execRequest($requete);
 		if ($resId) {
-			$resBrut = $this->bd->tableauSuivant($resId);
+			$resBrut = $this->bd->nextArray($resId);
 			$result = $resBrut[0] + 1;
 			$this->getUtil()->trace("getNextFreeId(".$tableName."): requete = ".$requete);
 			$this->getUtil()->trace("=> result = ".$result);

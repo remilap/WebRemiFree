@@ -33,7 +33,7 @@ class GestionAccueilBD extends GestionBD {
 
 	// Init of the database
 	public function init() {
-		$this->getUtil()->trace("GestionAccueilBD::init: begin");
+		$this->getUtil()->trace("begin");
 		$res = $this->createTable($this->getChapterTableName(), "
 			id smallint(2) NOT NULL default '0',
 			name varchar(50) NOT NULL default '',
@@ -79,7 +79,7 @@ class GestionAccueilBD extends GestionBD {
 		$reqList = "SELECT * FROM ".$this->getChapterTableName()." WHERE name='".$chapter."'";
 		$this->getUtil()->trace("Request=".$reqList);
 		$resChapter = $this->getBD()->execRequete($reqList);
-		$unChapter = $this->getBD()->objetSuivant($resChapter);
+		$unChapter = $this->getBD()->nextObject($resChapter);
 		if (! $unChapter) {
 			return 0;
 		}
@@ -94,7 +94,7 @@ class GestionAccueilBD extends GestionBD {
 		$reqList = "SELECT * FROM ".$this->getColumnTableName()." WHERE name='".$column."'";
 		$this->getUtil()->trace("Request=".$reqList);
 		$resColumn = $this->getBD()->execRequete($reqList);
-		$unColumn = $this->getBD()->objetSuivant($resColumn);
+		$unColumn = $this->getBD()->nextObject($resColumn);
 		if (! $unColumn) {
 			return 0;
 		}
@@ -109,7 +109,7 @@ class GestionAccueilBD extends GestionBD {
 		$reqList = "SELECT * FROM ".$this->getUserTableName()." WHERE name='".$user."'";
 		$this->getUtil()->trace("Request=".$reqList);
 		$resUser = $this->getBD()->execRequete($reqList);
-		$unUser = $this->getBD()->objetSuivant($resUser);
+		$unUser = $this->getBD()->nextObject($resUser);
 		if (! $unUser) {
 			return 0;
 		}

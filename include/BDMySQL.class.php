@@ -8,12 +8,11 @@ class BDMySQL extends BD {
 	// Pas de constructeur: lui aussi est hérité
 
 	// Méthode connect: connexion à MySQL
-	private function connect($login, $password, $base, $serveur) {
-		echo "util no ".$this->getUtil()->getId();
-		$this->getUtil()->trace("BDMySQL::connect(login=".$login.", pwd=***, base=".$base.", server=".$server.")");
+	public function connect($login, $password, $base, $server) {
+		$this->getUtil()->trace("(login=".$login.", pwd=***, base=".$base.", server=".$server.")");
 		// Connexion au serveur MySQL
 		$this->setSGBD(self::BD_MYSQL);
-		$mysqli = new mysqli($serveur, $login, $password, $base);
+		$mysqli = new mysqli($server, $login, $password, $base);
 //		if ($mysqli->connect_errno) {
 //			$this->error_code = $mysqli->connect_errno;
 //			$this->error_mesg = $mysqli->connect_error;
@@ -22,10 +21,10 @@ class BDMySQL extends BD {
 		if (mysqli_connect_error()) {
 			$this->error_code = mysqli_connect_errno();
 			$this->error_mesg = mysqli_connect_error();
-			$this->getUtil()->trace("BDMySQL::connect Error code=".$this->error_code.", msg=".$this->error_mesg);
+			$this->getUtil()->trace("Error code=".$this->error_code.", msg=".$this->error_mesg);
 			return 0;
 		}
-		$this->getUtil()->trace("BDMySQL::connect without error");
+		$this->getUtil()->trace("end without error");
 		$this->error_code = 0;
 /*
 		try {
@@ -39,16 +38,16 @@ class BDMySQL extends BD {
 	}
 
 	// Méthode d'exécution d'une requête
-	private function exec($request) {
-		$this->getUtil()->trace("BDMySQL::exec begin");
-		$res = $this->connexion->query($request);
+	public function exec($request) {
+		$this->getUtil()->trace("begin");
+		$res = $this->getCnx()->query($request);
 		if ($res) {
 			$this->error_code = 0;
 		} else  {
-			$this->error_code = $this->connexion->errno;
-			$this->error_mesg = $this->connexion->error;
+			$this->error_code = $this->getCnx()->errno;
+			$this->error_mesg = $this->getCnx()->error;
 		}
-		$this->getUtil()->trace("BDMySQL::exec end with error_code: " . $this->error_code);
+		$this->getUtil()->trace("end with error_code: " . $this->error_code);
 		return $res;
 	}
 
@@ -56,7 +55,7 @@ class BDMySQL extends BD {
 
 	// Accès à la ligne suivante, sous forme d'objet
 	public function nextObject($result) {
-		return  mysql_fetch_object($result);
+		return  $result->fetch_object();
 	}
 
 	public function firstLine($result) {
@@ -96,7 +95,7 @@ class BDMySQL extends BD {
 	// Méthode ajoutée: renvoie le schéma d'une table
 	public function schemaTable($nom_table) {
 		// Recherche de la liste des attributs de la table
-		$listeAttr = @mysql_list_fields($this->base_name, $nom_table, $this->connexion);
+		$listeAttr = @mysql_list_fields($this->base_name, $nom_table, $this->getCnx());
 
 		if (!$listeAttr) {
 			echo ("Pb d'analyse de $nom_table");
@@ -125,8 +124,8 @@ class BDMySQL extends BD {
 
 	// Destructeur de la classe: on se déconnecte
 	public function __destruct () {
-//		if ($this->connexion) {
-//			@mysql_close ($this->connexion);
+//		if ($this->getCnx()) {
+//			@mysql_close ($this->getCnx());
 //		}
 	}
 
