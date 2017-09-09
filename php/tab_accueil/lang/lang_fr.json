@@ -1,0 +1,22 @@
+{
+	"form": {
+		"addchapter": "Add a chapter",
+		"addcolumn": "Add a column",
+		"adduser": "Add a user",
+		"addbookmark" : "Ajouter un signet",
+		"listchapter": "Chapters list",
+		"listcolumns": "Columns list",
+		"listusers": "Users list",
+		"listbookmarks": "Bookmarks list",
+		"noelement": "Aucun enregistrement dans la table<BR />"
+	},
+	"tbl": {
+		"norecord": "<P>Pas d'enregistrement dans la table %s</P>"
+		"mod": "mod",
+		"del": "sup",
+		"bookmark": "Signet",
+		"chapter": "Chapitre",
+		"column": "Colonne",
+		"user": "Utilisateur"
+	}
+}

@@ -1,0 +1,22 @@
+{
+	"form": {
+		"addchapter": "Add a chapter",
+		"addcolumn": "Add a column",
+		"adduser": "Add a user",
+		"addbookmark" : "Add a bookmark",
+		"listchapters": "Chapters list",
+		"listcolumns": "Columns list",
+		"listusers": "Users list",
+		"listbookmarks": "Bookmarks list",
+		"noelement": "No element found in the database<BR />"
+	},
+	"tbl": {
+		"norecord": "<P>No record in the %s table</P>",
+		"mod": "mod",
+		"del": "del",
+		"bookmark": "Bookmark",
+		"chapter": "Chapter",
+		"column": "Column",
+		"user": "User"
+	}
+}

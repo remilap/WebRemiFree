@@ -1,181 +1,47 @@
 <?php
+
+require_once('common.php');
 $title = "Table accueil";
 $date = date( "Ymd", getlastmod());
-$home = "../..";
-$homeDir = $_SERVER['DOCUMENT_ROOT'] ."/";
 
-require_once('TemplateEngine.php');
-require_once('Util.class.php');
-require_once('meekrodb.2.3.class.php');
-$tpl = new TemplateEngine($home."/template_lab.html");
-TemplateEngine::Output( $tpl->GetHTMLCode("entete_lab") );
-
-$debug = isset($_REQUEST['debug']) ? $_REQUEST['debug'] : "";
-$util = new Util($debug);
-$util->traceVariables();
-
-$tables[] = [
-	"tbl" => "bookmarks_chapter",
-	"id" => ["smallint(2)", "NOT NULL default '0'", "PRIMARY"],
-	"name" => ["varchar(50)", "NOT NULL default ''"],
-];
-$tables[] = [
-	"tbl" => "bookmarks_category",
-	"id" => ["smallint(2)", "NOT NULL default '0'", "PRIMARY"],
-	"name" => ["varchar(50)", "NOT NULL default ''"],
-	"id_chapter" => ["smallint(2)", "NOT NULL default '0'"],
-];
-$tables[] = [
-	"tbl" => "bookmarks_user",
-	"id" => ["smallint(2)", "NOT NULL default '0'", "PRIMARY"],
-	"name" => ["varchar(50)", "NOT NULL default ''"],
-];
-$tables[] = [
-	"tbl" => "bookmarks_list",
-	"id" => ["smallint(2)", "NOT NULL default '0'", "PRIMARY"],
-	"name" => ["varchar(50)", "NOT NULL default ''"],
-	"URL" => ["varchar(120)", "NOT NULL default ''"],
-	"id_column" => ["smallint(2)", "NOT NULL default '0'"],
-	"iconeName" => ["varchar(50)", "NOT NULL default ''"],
-	"tabName" => ["varchar(50)", "NOT NULL default ''"],
-	"id_user" => ["smallint(2)", "NOT NULL default '0'"],
-];
-$util->trace("tables[0]: ".$tables[0]["tbl"]);
-
-//DB::$host = 'sql.free.fr';
-//DB::$host = '127.0.0.1';
-DB::$host = $_SERVER['SERVER_NAME'];
-DB::$dbName = 'remi_lapointe';
-#DB::$encoding = 'utf8';
-DB::$user = 'remi.lapointe';
-DB::$password = 'rem001';
-$util->trace("host: ".DB::$host.", dbName: ".DB::$dbName.", user: ".DB::$user);
-
-foreach ($tables as $tbl => $fields) {
-	$reqCreate = "CREATE TABLE IF NOT EXISTS ".$fields["tbl"]." (";
-	$primKey = "";
-	foreach ($fields as $f => $args) {
-		if ($f == "tbl") continue;
-		$reqCreate .= $f." ".$args[0]." ".$args[1].", ";
-		if (isset($args[2])) {
-			$primKey = "PRIMARY KEY (".$f.")";
-		}
-	}
-	$reqCreate .= $primKey.")";
-	$util->trace("reqCreate: ".$reqCreate);
-	$results = DB::query($reqCreate);
-	$util->trace("results: ".$results);
-}
-/*
-	$accueilBD = new GestionAccueilBD($debug);
-	if (! $accueilBD) {
-		echo "<P><B><FONT COLOR='RED'>ERROR unable to connect to the database</FONT></B></P>\n";
-		exit (1);
-	}
-
-	$accueilBD->getUtil()->setDebugTo($debug);
-
-	$resCnx = $accueilBD->connexion();
-	if ($resCnx) {
-		echo "<P><B><FONT COLOR='RED'>".$resCnx."<BR>".$accueilBD->messageSGBD()."</FONT></B></P>\n";
-		exit (1);
-	}
-
-	$resCreate = $accueilBD->init();
-	if ($resCreate) {
-		echo "<P><B><FONT COLOR='RED'>ERROR ".$resCreate."<BR>".$accueilBD->messageSGBD()."</FONT></B></P>\n";
-		exit (1);
-	}
-*/
 ?>
-<FORM METHOD='POST' ACTION='accueil_modify.php' NAME='form_accueil_liste'>
+<FORM METHOD='POST' ACTION='bookmarks_list.php' NAME='form_listbookmarks'>
+<INPUT TYPE='SUBMIT' NAME='listbookmarks' VALUE='<?php echo L::form_listbookmarks; ?>'>
+<INPUT TYPE='HIDDEN' NAME='debug' id='debug' VALUE='<?php echo $debug; ?>'>
+</FORM>
+
+<FORM METHOD='POST' ACTION='chapters_list.php' NAME='form_listchapters'>
+<INPUT TYPE='SUBMIT' NAME='listchapters' VALUE='<?php echo L::form_listchapters; ?>'>
+<INPUT TYPE='HIDDEN' NAME='debug' id='debug' VALUE='<?php echo $debug; ?>'>
+</FORM>
+
+<FORM METHOD='POST' ACTION='columns_list.php' NAME='form_listcolumns'>
+<INPUT TYPE='SUBMIT' NAME='listcolumns' VALUE='<?php echo L::form_listcolumns; ?>'>
+<INPUT TYPE='HIDDEN' NAME='debug' id='debug' VALUE='<?php echo $debug; ?>'>
+</FORM>
+
+<FORM METHOD='POST' ACTION='users_list.php' NAME='form_listusers'>
+<INPUT TYPE='SUBMIT' NAME='listusers' VALUE='<?php echo L::form_listusers; ?>'>
+<INPUT TYPE='HIDDEN' NAME='debug' id='debug' VALUE='<?php echo $debug; ?>'>
+</FORM>
+
+<FORM METHOD='POST' ACTION='bookmark_modify.php' NAME='form_modifybookmark'>
 <INPUT TYPE='HIDDEN' NAME='selectedElem' VALUE='none' SIZE='0' MAXLENGTH='0'>
-<INPUT TYPE='SUBMIT' NAME='addBookmark' VALUE='Add a bookmark'>
+<INPUT TYPE='SUBMIT' NAME='addBookmark' VALUE='<?php echo L::form_addbookmark; ?>'>
 <TABLE BORDER="1">
 <TR>
-	<TH><FONT SIZE="-1">mod</FONT></TH>
-	<TH><FONT SIZE="-1">del</FONT></TH>
-	<TH>Bookmark name</TH>
-	<TH>Chapter</TH>
-	<TH>Column</TH>
-	<TH>User</TH>
+	<TH><FONT SIZE="-1"><?php echo L::tbl_mod; ?></FONT></TH>
+	<TH><FONT SIZE="-1"><?php echo L::tbl_del; ?></FONT></TH>
+	<TH><?php echo L::tbl_bookmark; ?></TH>
+	<TH><?php echo L::tbl_chapter; ?></TH>
+	<TH><?php echo L::tbl_column; ?></TH>
+	<TH><?php echo L::tbl_user; ?></TH>
 </TR>
 
 <?php
 
-$action_debug = "";
-if ($debug) $action_debug = "&debug=".$debug;
+getBookmarks();
 
-$results = DB::query('SELECT * FROM '.$tables[0]["tbl"]);
-if ($results) {
-	$nbChapters = 0;
-	foreach ($results as $row) {
-//		echo "<P>Id: " . $row['id'] . "<BR />\n";
-//		echo "Name: " . $row['name'] . "<BR />\n";
-//		echo "-------------</P>\n";
-		$nbChapters++;
-		$id = $row['id'];
-		$name = $row['name'];
-		$chaptersId[$nbChapters] = $id;
-		$chaptersName[$id] = $name;
-		$util->trace("chaptersName[".$id."] = ".$name);
-	}
-} else {
-	echo "<P>no record in the ".$tables[0]["tbl"]." table</P>\n";
-}
-
-$results = DB::query('SELECT * FROM '.$tables[1]["tbl"]);
-if ($results) {
-	$nbColumns = 0;
-	foreach ($results as $row) {
-		$nbColumns++;
-		$id = $row['id'];
-		$name = $row['name'];
-		$id_chap = $row['id_chapter'];
-		$columnsId[$nbChapters] = $id;
-		$columnsName[$id] = $name;
-		$columnsIdChapter[$id] = $id_chap;
-		$util->trace("columnsName[".$id."] = ".$name.", id_chap = ".$id_chap);
-	}
-} else {
-	echo "<P>no record in the ".$tables[1]["tbl"]." table</P>\n";
-}
-
-$results = DB::query('SELECT * FROM '.$tables[2]["tbl"]);
-if ($results) {
-	$nbUsers = 0;
-	foreach ($results as $row) {
-		$nbUsers++;
-		$id = $row['id'];
-		$name = $row['name'];
-		$usersId[$nbChapters] = $id;
-		$usersName[$id] = $name;
-		$util->trace("usersName[".$id."] = ".$name);
-	}
-} else {
-	echo "<P>no record in the ".$tables[2]["tbl"]." table</P>\n";
-}
-
-$results = DB::query('SELECT * FROM '.$tables[3]["tbl"]);
-if ($results) {
-	$nbBookmarks = 0;
-	foreach ($results as $row) {
-		$nbBookmarks++;
-		$options_lig = "";
-		if ($nbBookmarks % 2 == 0) $options_lig = ' BGCOLOR="Silver" ';
-		echo "<TR" . $options_lig . ">\n";
-		echo "<TD><center><A HREF='accueil_modify.php?selectedElem=".$row['id']."&action=modify".$action_debug."'><IMG SRC='../b_edit.png' ALT='modify'></A></center> </TD>\n";
-		echo "<TD><center><A HREF='accueil_display.php?selectedElem=".$row['id']."&action=delete".$action_debug."'><IMG SRC='../b_drop.png' ALT='delete'></A></center> </TD>\n";
-		echo "<TD>" . $id . "</TD>\n";
-		echo "<TD>" . $id . "</TD>\n";
-		echo "<TD>" . $name . "</TD>\n";
-		$user_name = "unknown";
-		echo "<TD>" . $user_name . "</TD>\n";
-		echo "<TR>\n";
-	}
-} else {
-	echo "<P>no record in the ".$tables[3]["tbl"]." table</P>\n";
-}
 /*
 	$listChapters = $accueilBD->getAllElems($accueilBD->getChapterTableName());
 	$nbChapters = 0;
