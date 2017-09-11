@@ -56,7 +56,7 @@ class Util {
 					if ($caller["file"]) {
 						$txt .= "[".$caller["file"].":".$caller["line"]."] ";
 					}
-					if ($caller["class"]) {
+					if (isset($caller["class"]) && $caller["class"]) {
 						$txt .= $caller["class"].$caller["type"].$caller["function"]." ";
 					}
 				}

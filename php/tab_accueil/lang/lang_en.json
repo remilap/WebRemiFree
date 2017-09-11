@@ -1,4 +1,11 @@
 {
+	"txt": {
+		"common": "Bookmarks",
+		"modchapter": "Modify a chapter",
+		"dispchapter": "Display a chapter",
+		"listchapters": "List of the chapters",
+		"delchapter": "Delete a chapter"
+	},
 	"form": {
 		"addchapter": "Add a chapter",
 		"addcolumn": "Add a column",

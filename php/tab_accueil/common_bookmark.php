@@ -1,28 +1,10 @@
 <?php
-$title = "Table accueil";
-$date = date( "Ymd", getlastmod());
+
 $home = "../..";
-$homeDir = $_SERVER['DOCUMENT_ROOT'] ."/";
-
-require_once('TemplateEngine.php');
-require_once('Util.class.php');
-require_once('meekrodb.2.3.class.php');
-// include i18n class and initialize it
-require_once 'i18n.class.php';
-$i18n = new i18n('lang/lang_{LANGUAGE}.json', 'langcache/', 'en');
-// Parameters: language file path, cache dir, default language (all optional)
-// init object: load language files, parse them if not cached, and so on.
-
-$lang = isset($_REQUEST['lang']) ? $_REQUEST['lang'] : "en";
-$i18n->setForcedLang($lang);
-$i18n->init();
 $tpl = new TemplateEngine($home."/template_lab.html");
 
-TemplateEngine::Output( $tpl->GetHTMLCode("entete_lab") );
-
-$debug = isset($_REQUEST['debug']) ? $_REQUEST['debug'] : "";
-$util = new Util($debug);
-$util->traceVariables();
+$title = isset($title) ? $title : L::txt_common;
+$date = isset($date) ? $date : date( "Ymd", getlastmod());
 
 $tables[] = [
 	"tbl" => "bookmarks_chapter",
@@ -50,35 +32,7 @@ $tables[] = [
 	"tabName" => ["varchar(50)", "NOT NULL default ''"],
 	"id_user" => ["smallint(2)", "NOT NULL default '0'"],
 ];
-$util->trace("tables[0]: ".$tables[0]["tbl"]);
 
-//DB::$host = 'sql.free.fr';
-//DB::$host = '127.0.0.1';
-DB::$host = $_SERVER['SERVER_NAME'];
-DB::$dbName = 'remi_lapointe';
-#DB::$encoding = 'utf8';
-DB::$user = 'remi.lapointe';
-DB::$password = 'rem001';
-$util->trace("host: ".DB::$host.", dbName: ".DB::$dbName.", user: ".DB::$user);
-
-foreach ($tables as $tbl => $fields) {
-	$reqCreate = "CREATE TABLE IF NOT EXISTS ".$fields["tbl"]." (";
-	$primKey = "";
-	foreach ($fields as $f => $args) {
-		if ($f == "tbl") continue;
-		$reqCreate .= $f." ".$args[0]." ".$args[1].", ";
-		if (isset($args[2])) {
-			$primKey = "PRIMARY KEY (".$f.")";
-		}
-	}
-	$reqCreate .= $primKey.")";
-	$util->trace("reqCreate: ".$reqCreate);
-	$results = DB::query($reqCreate);
-	$util->trace("results: ".$results);
-}
-
-$action_debug = "";
-if ($debug) $action_debug = "&debug=".$debug;
 
 function getChapters() {
 	global $tables, $nbChapters, $chaptersId, $chaptersName, $util;
