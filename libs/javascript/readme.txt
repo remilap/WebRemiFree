@@ -1,0 +1,1 @@
+The minimized JavaScript file contains the minimized version of the Iriven_FormManager.src.js" file and minimized version of the Iriven_DatePicker  and Iriven_TransForm plugins!

@@ -30,10 +30,11 @@ DB::$user = 'remi.lapointe';
 DB::$password = 'rem001';
 
 $action_debug = "";
-if ($debug) $action_debug = "&debug=".$debug;
+if ($util->getDebugStatus()) $action_debug = "&debug=".$util->getDebugStatus();
 
+// Create all the tables if needed
 function createTables() {
-	global $tables;
+	global $tables, $util;
 	foreach ($tables as $tbl => $fields) {
 		$reqCreate = "CREATE TABLE IF NOT EXISTS ".$fields["tbl"]." (";
 		$primKey = "";
@@ -50,5 +51,25 @@ function createTables() {
 		$util->trace("results: ".$results);
 	}
 }
+
+// Returns the next free id for a table
+function getNextFreeId($tableName) {
+	global $util;
+	$result = 1;
+	$requete = "SELECT max(`id`) FROM ".$tableName;
+	$util->trace("requete: ".$requete);
+	$results = DB::queryFirstRow($requete);
+	$util->trace("results: ".var_dump($row));
+	$result = $row["max(`id`)"] + 1;
+	return $result;
+}
+
+// Insert a new record in a table
+function insertARecord($tableName, $fieldsNameValue) {
+	$reqInsert = "INSERT INTO ".$tableName." VALUES (".$fieldsValues.")";
+	$this->getUtil()->trace("Request=".$reqInsert);
+	$resInsert = DB::insert($tableName, $fieldsNameValue);
+}
+
 
 ?>

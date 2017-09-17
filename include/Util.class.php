@@ -9,7 +9,7 @@ class Util {
 
 	// Constructor
 	public function __construct($debug = 0, $htmlFormat = 1) {
-		$this->debug = $debug;
+		$this->setDebugTo($debug);
 		$this->htmlFormat = $htmlFormat;
 		$this->id = self::$nextId++;
 		$this->trace("constructor of ".$this->getInfo());
@@ -27,7 +27,21 @@ class Util {
 
 	// Set the debug to a given state
 	public function setDebugTo($debug = 0) {
-		$this->debug = $debug;
+		$res = 0;
+		if (isset($debug)) {
+			if (is_array($debug)) {
+				$test = $debug[0];
+			} else {
+				$test = $debug;
+			}
+			if (is_int($test) && $test == 0) {
+				$res = 1;
+			}
+			if (is_string($test) && $test == "on") {
+				$res = 1;
+			}
+		}
+		$this->debug = $res;
 	}
 
 	// Get the debug status

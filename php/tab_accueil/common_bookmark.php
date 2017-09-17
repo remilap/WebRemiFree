@@ -12,7 +12,7 @@ $tables[] = [
 	"name" => ["varchar(50)", "NOT NULL default ''"],
 ];
 $tables[] = [
-	"tbl" => "bookmarks_category",
+	"tbl" => "bookmarks_column",
 	"id" => ["smallint(2)", "NOT NULL default '0'", "PRIMARY"],
 	"name" => ["varchar(50)", "NOT NULL default ''"],
 	"id_chapter" => ["smallint(2)", "NOT NULL default '0'"],
@@ -23,7 +23,7 @@ $tables[] = [
 	"name" => ["varchar(50)", "NOT NULL default ''"],
 ];
 $tables[] = [
-	"tbl" => "bookmarks_list",
+	"tbl" => "bookmarks_bookmark",
 	"id" => ["smallint(2)", "NOT NULL default '0'", "PRIMARY"],
 	"name" => ["varchar(50)", "NOT NULL default ''"],
 	"URL" => ["varchar(120)", "NOT NULL default ''"],
@@ -116,19 +116,6 @@ function getBookmarks() {
 			$booksTabName[$id] = $row['tabName'];
 			$booksIdUser[$id] = $row['id_user'];
 			$util->trace("booksmarks[".$id."] = ".$name);
-/*
-		$options_lig = "";
-		if ($nbBookmarks % 2 == 0) $options_lig = ' BGCOLOR="Silver" ';
-		echo "<TR" . $options_lig . ">\n";
-		echo "<TD><center><A HREF='accueil_modify.php?selectedElem=".$row['id']."&action=modify".$action_debug."'><IMG SRC='../b_edit.png' ALT='modify'></A></center> </TD>\n";
-		echo "<TD><center><A HREF='accueil_display.php?selectedElem=".$row['id']."&action=delete".$action_debug."'><IMG SRC='../b_drop.png' ALT='delete'></A></center> </TD>\n";
-		echo "<TD>" . $id . "</TD>\n";
-		echo "<TD>" . $id . "</TD>\n";
-		echo "<TD>" . $name . "</TD>\n";
-		$user_name = "unknown";
-		echo "<TD>" . $user_name . "</TD>\n";
-		echo "<TR>\n";
-*/
 		}
 		$res = "";
 	} else {

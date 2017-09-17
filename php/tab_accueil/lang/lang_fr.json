@@ -1,20 +1,25 @@
 {
 	"txt": {
-		"common": "Bookmarks",
-		"modchapter": "Modification d'un chapitre",
-		"dispchapter": "Affichage d'un chapitre",
-		"listchapters": "Liste des chapitres",
-		"delchapter": "Suppression d'un chapitre"
+		"common": "Signets",
+		"modchapter": "Modification de chapitre",
+		"dispchapter": "Affichage de chapitre",
+		"lstchapter": "Liste des chapitres",
+		"delchapter": "Suppression de chapitre",
+		"modify": "Modification de ",
+		"display": "Affichage de ",
+		"delete": "Suppression de ",
+		"list": "Liste des ",
+		"add": "Ajout de "
 	},
 	"form": {
-		"addchapter": "Add a chapter",
-		"addcolumn": "Add a column",
-		"adduser": "Add a user",
+		"addchapter": "Ajouter un chapitre",
+		"addcolumn": "Ajouter une colonne",
+		"adduser": "Ajouter un utilisateur",
 		"addbookmark" : "Ajouter un signet",
-		"listchapter": "Chapters list",
-		"listcolumns": "Columns list",
-		"listusers": "Users list",
-		"listbookmarks": "Bookmarks list",
+		"lstchapter": "Liste des chapitres",
+		"lstcolumn": "Liste des colonnes",
+		"lstuser": "Liste des utilisateurs",
+		"lstbookmark": "Liste des signets",
 		"noelement": "Aucun enregistrement dans la table<BR />"
 	},
 	"tbl": {
