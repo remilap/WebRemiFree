@@ -34,7 +34,7 @@ class Util {
 			} else {
 				$test = $debug;
 			}
-			if (is_int($test) && $test == 0) {
+			if (is_int($test) && $test != 0) {
 				$res = 1;
 			}
 			if (is_string($test) && $test == "on") {

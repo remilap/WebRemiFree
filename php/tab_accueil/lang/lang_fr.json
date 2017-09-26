@@ -5,6 +5,7 @@
 		"dispchapter": "Affichage de chapitre",
 		"lstchapter": "Liste des chapitres",
 		"delchapter": "Suppression de chapitre",
+		"generpage": "Fabrique la page web",
 		"modify": "Modification de ",
 		"display": "Affichage de ",
 		"delete": "Suppression de ",
@@ -20,7 +21,14 @@
 		"lstcolumn": "Liste des colonnes",
 		"lstuser": "Liste des utilisateurs",
 		"lstbookmark": "Liste des signets",
-		"noelement": "Aucun enregistrement dans la table<BR />"
+		"noelement": "Aucun enregistrement dans la table<BR />",
+		"namechapter": "Nom du chapitre",
+		"nameuser": "Nom de l'utilisateur",
+		"namecolumn": "Nom de la colonne",
+		"namebookmark": "Nom du signet",
+		"nameurl": "URL",
+		"nameicone": "Nom de l'icone",
+		"nametab": "Nom de l'onglet"
 	},
 	"tbl": {
 		"norecord": "<P>Pas d'enregistrement dans la table %s</P>"
@@ -29,6 +37,15 @@
 		"bookmark": "Signet",
 		"chapter": "Chapitre",
 		"column": "Colonne",
-		"user": "Utilisateur"
+		"user": "Utilisateur",
+		"url": "URL",
+		"icone": "Icone",
+		"tabname": "Onglet"
+	},
+	"btn": {
+		"ok": "Ok",
+		"submit": "Ok",
+		"cancel": "Annuler",
+		"delete": "Supprimer"
 	}
 }

@@ -36,19 +36,17 @@ $tables[] = [
 
 function getChapters() {
 	global $tables, $nbChapters, $chaptersId, $chaptersName, $util;
-	$results = DB::query('SELECT * FROM '.$tables[0]["tbl"]);
+	$query = "SELECT * FROM `" . $tables[0]["tbl"] . "` ORDER BY name ASC";
+	$results = DB::query($query);
 	if ($results) {
 		$nbChapters = 0;
 		foreach ($results as $row) {
-//		echo "<P>Id: " . $row['id'] . "<BR />\n";
-//		echo "Name: " . $row['name'] . "<BR />\n";
-//		echo "-------------</P>\n";
 			$nbChapters++;
-			$id = $row['id'];
-			$name = $row['name'];
+			$id = $row["id"];
+			$name = $row["name"];
 			$chaptersId[$nbChapters] = $id;
-			$chaptersName[$id] = $name;
-			$util->trace("chaptersName[".$id."] = ".$name);
+			$chaptersName[$nbChapters] = $name;
+			$util->trace("chaptersName[".$nbChapters."] = ".$name);
 		}
 		$res = "";
 	} else {
@@ -57,20 +55,40 @@ function getChapters() {
 	return $res;
 }
 
+function getRecordName($tbl, $id) {
+	global $tables, $util;
+	$query = "SELECT * FROM `" . $tbl . "` WHERE `id`='" . $id . "'";
+	$row = DB::queryFirstRow($query);
+	if ($row) {
+		$name = $row["name"];
+		$util->trace("name: ".$name);
+	} else {
+		echo "<A>No ". $tbl . " found with id ". $id . "</A>";
+		$name = "";
+	}
+	return $name;
+}
+
+function getChapterName($id) {
+	global $tables, $util;
+	return getRecordName($tables[0]["tbl"], $id);
+}
+
 function getColumns() {
 	global $tables, $nbColumns, $columnsId, $columnsName, $columnsIdChapter, $util;
-	$results = DB::query('SELECT * FROM '.$tables[1]["tbl"]);
+	$query = "SELECT * FROM `" . $tables[1]["tbl"] . "` ORDER BY name ASC";
+	$results = DB::query($query);
 	if ($results) {
 		$nbColumns = 0;
 		foreach ($results as $row) {
 			$nbColumns++;
-			$id = $row['id'];
-			$name = $row['name'];
-			$id_chap = $row['id_chapter'];
-			$columnsId[$nbChapters] = $id;
-			$columnsName[$id] = $name;
-			$columnsIdChapter[$id] = $id_chap;
-			$util->trace("columnsName[".$id."] = ".$name.", id_chap = ".$id_chap);
+			$id = $row["id"];
+			$name = $row["name"];
+			$id_chap = $row["id_chapter"];
+			$columnsId[$nbColumns] = $id;
+			$columnsName[$nbColumns] = $name;
+			$columnsIdChapter[$nbColumns] = $id_chap;
+			$util->trace("columnsName[".$nbColumns."] = ".$name.", id_chap = ".$id_chap);
 		}
 		$res = "";
 	} else {
@@ -79,18 +97,24 @@ function getColumns() {
 	return $res;
 }
 
+function getColumnName($id) {
+	global $tables, $util;
+	return getRecordName($tables[1]["tbl"], $id);
+}
+
 function getUsers() {
 	global $tables, $nbUsers, $usersId, $usersName, $util;
-	$results = DB::query('SELECT * FROM '.$tables[2]["tbl"]);
+	$query = "SELECT * FROM `" . $tables[2]["tbl"] . "` ORDER BY name ASC";
+	$results = DB::query($query);
 	if ($results) {
 		$nbUsers = 0;
 		foreach ($results as $row) {
 			$nbUsers++;
-			$id = $row['id'];
-			$name = $row['name'];
-			$usersId[$nbChapters] = $id;
-			$usersName[$id] = $name;
-			$util->trace("usersName[".$id."] = ".$name);
+			$id = $row["id"];
+			$name = $row["name"];
+			$usersId[$nbUsers] = $id;
+			$usersName[$nbUsers] = $name;
+			$util->trace("usersName[".$nbUsers."] = ".$name);
 		}
 		$res = "";
 	} else {
@@ -99,29 +123,40 @@ function getUsers() {
 	return $res;
 }
 
+function getUserName($id) {
+	global $tables, $util;
+	return getRecordName($tables[2]["tbl"], $id);
+}
+
 function getBookmarks() {
 	global $tables, $nbBookmarks, $booksId, $booksName, $booksURL, $booksIdColumn, $booksIconeName, $booksTabName, $booksIdUser, $util;
-	$results = DB::query('SELECT * FROM '.$tables[3]["tbl"]);
+	$query = "SELECT * FROM `" . $tables[3]["tbl"] . "` ORDER BY name ASC";
+	$results = DB::query($query);
 	if ($results) {
 		$nbBookmarks = 0;
 		foreach ($results as $row) {
 			$nbBookmarks++;
-			$id = $row['id'];
-			$name = $row['name'];
+			$id = $row["id"];
+			$name = $row["name"];
 			$booksId[$nbBookmarks] = $id;
-			$booksName[$id] = $name;
-			$booksURL[$id] = $row['URL'];
-			$booksIdColumn[$id] = $row['id_column'];
-			$booksIconeName[$id] = $row['iconeName'];
-			$booksTabName[$id] = $row['tabName'];
-			$booksIdUser[$id] = $row['id_user'];
-			$util->trace("booksmarks[".$id."] = ".$name);
+			$booksName[$nbBookmarks] = $name;
+			$booksURL[$nbBookmarks] = $row["URL"];
+			$booksIdColumn[$nbBookmarks] = $row["id_column"];
+			$booksIconeName[$nbBookmarks] = $row["iconeName"];
+			$booksTabName[$nbBookmarks] = $row["tabName"];
+			$booksIdUser[$nbBookmarks] = $row["id_user"];
+			$util->trace("booksmarks[".$nbBookmarks."] = ".$name);
 		}
 		$res = "";
 	} else {
 		$res = L::tbl_norecord($tables[3]["tbl"]);
 	}
 	return $res;
+}
+
+function getBookmarkName($id) {
+	global $tables, $util;
+	return getRecordName($tables[3]["tbl"], $id);
 }
 
 /*

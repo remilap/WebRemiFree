@@ -5,6 +5,7 @@
 		"dispchapter": "Display a chapter",
 		"lstchapter": "List of the chapters",
 		"delchapter": "Delete a chapter",
+		"generpage": "Build the web page",
 		"modify": "Modify a ",
 		"display": "Display a ",
 		"delete": "Delete a ",
@@ -20,7 +21,14 @@
 		"lstcolumn": "Columns list",
 		"lstuser": "Users list",
 		"lstbookmark": "Bookmarks list",
-		"noelement": "No element found in the database<BR />"
+		"noelement": "No element found in the database<BR />",
+		"namechapter": "Chapter name",
+		"nameuser": "User name",
+		"namecolumn": "Column name",
+		"namebookmark": "Bookmark name",
+		"nameurl": "URL",
+		"nameicone": "Icone name",
+		"nametab": "Tab name"
 	},
 	"tbl": {
 		"norecord": "<P>No record in the %s table</P>",
@@ -29,6 +37,15 @@
 		"bookmark": "Bookmark",
 		"chapter": "Chapter",
 		"column": "Column",
-		"user": "User"
+		"user": "User",
+		"url": "URL",
+		"icone": "Icone name",
+		"tabname": "Tab name"
+	},
+	"btn": {
+		"ok": "Ok",
+		"submit": "Submit",
+		"cancel": "Cancel",
+		"delete": "Delete"
 	}
 }

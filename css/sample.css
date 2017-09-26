@@ -217,3 +217,8 @@ acronym {
 .accesskey {
 	text-decoration: underline;
 	}
+
+.error {
+	color:red;
+	font-family:verdana, Helvetica;
+	}

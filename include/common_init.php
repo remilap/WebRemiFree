@@ -58,7 +58,7 @@ function getNextFreeId($tableName) {
 	$result = 1;
 	$requete = "SELECT max(`id`) FROM ".$tableName;
 	$util->trace("requete: ".$requete);
-	$results = DB::queryFirstRow($requete);
+	$row = DB::queryFirstRow($requete);
 	$util->trace("results: ".var_dump($row));
 	$result = $row["max(`id`)"] + 1;
 	return $result;
@@ -66,10 +66,21 @@ function getNextFreeId($tableName) {
 
 // Insert a new record in a table
 function insertARecord($tableName, $fieldsNameValue) {
+	global $util;
 	$reqInsert = "INSERT INTO ".$tableName." VALUES (".$fieldsValues.")";
 	$this->getUtil()->trace("Request=".$reqInsert);
 	$resInsert = DB::insert($tableName, $fieldsNameValue);
 }
 
+function prepSQL($value) {
+	// Stripslashes
+	if (get_magic_quotes_gpc()) {
+		$value = stripslashes($value);
+	}
+	// Quote
+	//$value = "'" . mysql_real_escape_string($value) . "'";
+
+	return $value;
+}
 
 ?>
