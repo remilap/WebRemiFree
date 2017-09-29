@@ -56,7 +56,7 @@ function getChapters() {
 }
 
 function getRecordName($tbl, $id) {
-	global $tables, $util;
+	global $util;
 	$query = "SELECT * FROM `" . $tbl . "` WHERE `id`='" . $id . "'";
 	$row = DB::queryFirstRow($query);
 	if ($row) {
@@ -102,6 +102,20 @@ function getColumnName($id) {
 	return getRecordName($tables[1]["tbl"], $id);
 }
 
+function getChapterIdOfColumn($id_col) {
+	global $tables, $util;
+	$query = "SELECT * FROM `" . $tables[1]["tbl"] . "` WHERE `id`='" . $id_col . "'";
+	$row = DB::queryFirstRow($query);
+	if ($row) {
+		$id_chapter = $row["id_chapter"];
+		$util->trace("id_chapter: ".$id_chapter);
+	} else {
+		echo "<A>No ". $tbl . " found with id ". $id_col . "</A>";
+		$id_chapter = 0;
+	}
+	return $id_chapter;
+}
+
 function getUsers() {
 	global $tables, $nbUsers, $usersId, $usersName, $util;
 	$query = "SELECT * FROM `" . $tables[2]["tbl"] . "` ORDER BY name ASC";
@@ -128,9 +142,13 @@ function getUserName($id) {
 	return getRecordName($tables[2]["tbl"], $id);
 }
 
-function getBookmarks() {
-	global $tables, $nbBookmarks, $booksId, $booksName, $booksURL, $booksIdColumn, $booksIconeName, $booksTabName, $booksIdUser, $util;
-	$query = "SELECT * FROM `" . $tables[3]["tbl"] . "` ORDER BY name ASC";
+function getBookmarks($id_user) {
+	global $tables, $nbBookmarks, $booksId, $booksName, $booksURL, $booksIdColumn, $booksIconeName, $booksTabName, $booksIdUser, $nbBooksInCol, $nbColsInChap, $tabIdBooks, $util;
+	$query = "SELECT * FROM `" . $tables[3]["tbl"] . "`";
+	if ($id_user) {
+		$query = $query . " WHERE `id_user`='" . $id_user . "'";
+	}
+	$query = $query . " ORDER BY name ASC";
 	$results = DB::query($query);
 	if ($results) {
 		$nbBookmarks = 0;
@@ -141,7 +159,26 @@ function getBookmarks() {
 			$booksId[$nbBookmarks] = $id;
 			$booksName[$nbBookmarks] = $name;
 			$booksURL[$nbBookmarks] = $row["URL"];
-			$booksIdColumn[$nbBookmarks] = $row["id_column"];
+			$idCol = $row["id_column"];
+			$booksIdColumn[$nbBookmarks] = $idCol;
+			$idChap = getChapterIdOfColumn($idCol);
+			//echo "== id=".$id.", name=".$name.", nb=".$nbBookmarks.", idCol=".$idCol.", idChap=".$idChap;
+			if (isset($nbBooksInCol[$idCol])) {
+				//echo "++ books in Col";
+				$nbBooksInCol[$idCol]++;
+			} else {
+				//echo "new book in Col";
+				$nbBooksInCol[$idCol] = 1;
+				if (isset($nbColsInChap[$idChap])) {
+					//echo "++ cols in Chap";
+					$nbColsInChap[$idChap]++;
+				} else {
+					//echo "new col in Chap";
+					$nbColsInChap[$idChap] = 1;
+				}
+			}
+			$n = $nbBooksInCol[$idCol];
+			$tabIdBooks[$idChap][$idCol][$n] = $id;
 			$booksIconeName[$nbBookmarks] = $row["iconeName"];
 			$booksTabName[$nbBookmarks] = $row["tabName"];
 			$booksIdUser[$nbBookmarks] = $row["id_user"];

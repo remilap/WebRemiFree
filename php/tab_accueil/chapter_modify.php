@@ -92,7 +92,7 @@ if ($what == 'chapter') {
 		}
 	}
 } else if ($what == 'bookmark') {
-	getBookmarks();
+	getBookmarks('');
 	if ($operation != 'add' && $selectedElem != 'none') {
 		$found = 0;
 		for ($i = 1; $i <= $nbBookmarks; $i++) {
@@ -209,21 +209,33 @@ if ($what == 'chapter') {
 		<td valign='top'><label for='url'>" . L::form_nameurl . "<span class='required'>*</span></label></td>
 		<td valign='top'>";
 	// add a simple text field for URL
-	echo "<input type='text' name='url' class='control text validate[required]' value='" . $booksURL[$found] . "'" . $disable . ">";
+	$val = '';
+	if ($found > 0) {
+		$val = $booksURL[$found];
+	}
+	echo "<input type='text' name='url' class='control text validate[required]' value='" . $val . "'" . $disable . ">";
 	echo "
 		</tr>
 		<tr class='row'>
 		<td valign='top'><label for='icone'>" . L::form_nameicone . "<span class='required'>*</span></label></td>
 		<td valign='top'>";
 	// add a simple text field for icone
-	echo "<input type='text' name='icone' class='control text validate[required]' value='" . $booksIconeName[$found] . "'" . $disable . ">";
+	$val = '';
+	if ($found > 0) {
+		$val = $booksIconeName[$found];
+	}
+	echo "<input type='text' name='icone' class='control text validate[required]' value='" . $val . "'" . $disable . ">";
 	echo "
 		</tr>
 		<tr class='row'>
 		<td valign='top'><label for='tab'>" . L::form_nametab . "<span class='required'>*</span></label></td>
 		<td valign='top'>";
 	// add a simple text field for tab
-	echo "<input type='text' name='tab' class='control text validate[required]' value='" . $booksTabName[$found] . "'" . $disable . ">";
+	$val = '';
+	if ($found > 0) {
+		$val = $booksTabName[$found];
+	}
+	echo "<input type='text' name='tab' class='control text validate[required]' value='" . $val . "'" . $disable . ">";
 	echo "</td>
 		</tr>";
 }

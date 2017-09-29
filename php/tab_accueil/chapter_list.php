@@ -258,7 +258,7 @@ if ($what == 'chapter') {
 	echo "<TH>" . L::tbl_tabname . "</TH>";
 	echo "</TR>";
 
-	getBookmarks();
+	getBookmarks('');
 	for ($i = 1; $i <= $nbBookmarks; $i++) {
 		$options_lig = "";
 		if ($i % 2 == 1) $options_lig = ' BGCOLOR="Silver" ';
