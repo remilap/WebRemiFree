@@ -53,6 +53,7 @@ if ($btn_submit == 'Add') {
 		$id = getNextFreeId($tables[3]["tbl"]);
 		$name = $_REQUEST['bookmark_name'];
 		$column_id = $_REQUEST['column_id'];
+		$column_order = $_REQUEST['column_order'];
 		$user_id = $_REQUEST['user_id'];
 		$url = $_REQUEST['url'];
 		$icone = $_REQUEST['icone'];
@@ -61,6 +62,7 @@ if ($btn_submit == 'Add') {
 			'id' => prepSQL($id),
 			'name' => prepSQL($name),
 			'id_column' => prepSQL($column_id),
+			'order_in_column' => prepSQL($column_order),
 			'id_user' => prepSQL($user_id),
 			'URL' => prepSQL($url),
 			'iconeName' => prepSQL($icone),
@@ -104,6 +106,7 @@ if ($btn_submit == 'Modify') {
 		$id = $selectedElem;
 		$name = $_REQUEST['bookmark_name'];
 		$column_id = $_REQUEST['column_id'];
+		$column_order = $_REQUEST['column_order'];
 		$user_id = $_REQUEST['user_id'];
 		$url = $_REQUEST['url'];
 		$icone = $_REQUEST['icone'];
@@ -112,6 +115,7 @@ if ($btn_submit == 'Modify') {
 			'id' => prepSQL($id),
 			'name' => prepSQL($name),
 			'id_column' => prepSQL($column_id),
+			'order_in_column' => prepSQL($column_order),
 			'id_user' => prepSQL($user_id),
 			'URL' => prepSQL($url),
 			'iconeName' => prepSQL($icone),
@@ -252,6 +256,7 @@ if ($what == 'chapter') {
 } else if ($what == 'bookmark') {
 	echo "<TH>" . L::tbl_bookmark . "</TH>";
 	echo "<TH>" . L::tbl_column . "</TH>";
+	echo "<TH>" . L::tbl_orderincolumn . "</TH>";
 	echo "<TH>" . L::tbl_user . "</TH>";
 	echo "<TH>" . L::tbl_url . "</TH>";
 	echo "<TH>" . L::tbl_icone . "</TH>";
@@ -271,6 +276,7 @@ if ($what == 'chapter') {
 		}
 		echo "<TD><A HREF='chapter_modify.php?selectedElem=".$id."&operation=display&what=".$what.$action_debug."'>" . $booksName[$i] . "</A></TD>\n";
 		echo "<TD><A HREF='chapter_modify.php?selectedElem=".$booksIdColumn[$i]."&operation=display&what=column".$action_debug."'>" . getColumnName($booksIdColumn[$i]) . "</A></TD>\n";
+		echo "<TD>" . $booksOrderInColumn[$i] . "</TD>\n";
 		echo "<TD><A HREF='chapter_modify.php?selectedElem=".$booksIdUser[$i]."&operation=display&what=user".$action_debug."'>" . getUserName($booksIdUser[$i]) . "</A></TD>\n";
 		echo "<TD>" . $booksURL[$i] . "</TD>\n";
 		echo "<TD>" . $booksIconeName[$i] . "</TD>\n";
@@ -279,7 +285,7 @@ if ($what == 'chapter') {
 	}
 	$msg = "";
 	if ($nbBookmarks == 0) {
-		$msg = L::tbl_norecord($tables[2]["tbl"]);
+		$msg = L::tbl_norecord($tables[3]["tbl"]);
 	}
 	echo $msg;
 

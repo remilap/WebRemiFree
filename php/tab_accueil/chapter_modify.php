@@ -186,6 +186,17 @@ if ($what == 'chapter') {
 	echo "
 		</tr>
 		<tr class='row'>
+		<td valign='top'><label for='column_order'>" . L::form_orderincolumn . "<span class='required'>*</span></label></td>
+		<td valign='top'>";
+	// add a simple text field for order in column
+	$val = '';
+	if ($found > 0) {
+		$val = $booksOrderInColumn[$found];
+	}
+	echo "<input type='text' name='column_order' class='control text validate[required]' value='" . $val . "'" . $disable . "></td>";
+	echo "
+		</tr>
+		<tr class='row'>
 		<td valign='top'><label for='user_id'>" . L::form_nameuser . "<span class='required'>*</span></label></td>
 		<td valign='top'>";
 	getUsers();
